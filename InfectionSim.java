@@ -14,6 +14,8 @@ public class InfectionSim
 
     private SIRCounter SIR_atual;
 
+    public boolean verbose;
+
 
     /**
      * Initializes a system with the specified collection of particles.
@@ -23,7 +25,6 @@ public class InfectionSim
      */
     public InfectionSim(Particle[] particles) {
         this.particles = particles.clone();   // defensive copy
-        this.canvas = new Draw("Simulacao");
         this.graph = new Draw("Grafico");
         this.graph.setYscale(0, 1);
         this.graph.setPenRadius(0.005);
@@ -101,12 +102,15 @@ public class InfectionSim
 
     // redraw all particles
     private void redraw(double limit) {
-        this.canvas.clear();
-        for (int i = 0; i < particles.length; i++)
+        if (verbose)
         {
-            particles[i].draw(canvas);
+            this.canvas.clear();
+            for (int i = 0; i < particles.length; i++)
+            {
+                particles[i].draw(canvas);
+            }
+            this.canvas.show();
         }
-        this.canvas.show();
 
         if (t < limit) {
             pq.insert(new RedrawEvent(t + 1.0 / HZ));
@@ -429,7 +433,7 @@ public class InfectionSim
         Particle[] particles;
 
         // create n random particles
-        if (args.length == 1) {
+        if (args.length >= 1 && !args[0].equals("-")) {
             int n = Integer.parseInt(args[0]);
             particles = new Particle[n];
             for (int i = 0; i < n; i++)
@@ -458,12 +462,22 @@ public class InfectionSim
             }
         }
 
+
         // create collision system and simulate
         InfectionSim system = new InfectionSim(particles);
-        system.canvas.setCanvasSize(600, 600);
+        
 
-        // enable double buffering
-        system.canvas.enableDoubleBuffering();
+        if ((args.length > 0 && args[0].equals("-")) || (args.length > 1 && args[1].equals("-"))) system.verbose = false;
+        else system.verbose = true;
+
+        if (system.verbose)
+        {
+            system.canvas = new Draw("Simulacao");
+            system.canvas.setCanvasSize(600, 600);
+            // enable double buffering
+            system.canvas.enableDoubleBuffering();
+        }
+        
 
         system.simulate(10000);
     }
