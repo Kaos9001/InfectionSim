@@ -177,7 +177,7 @@ public class InfectionSim {
                             i_seen++;
                         }
                     }
-                    StdOut.println("r = " + r/i_seen);
+                    //StdOut.println("r = " + r/i_seen);
                 }
             }
 
