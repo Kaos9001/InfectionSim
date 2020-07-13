@@ -39,7 +39,6 @@ public class Particle {
     public boolean infected;
     public boolean recovered;
     public double recovery_time;
-    public int infected_count;
 
 
     /**
@@ -66,7 +65,6 @@ public class Particle {
         this.infected = false;
         this.recovered = false;
         this.spread_radius = spread_radius;
-        this.infected_count = 0;
     }
          
     /**
@@ -87,7 +85,6 @@ public class Particle {
         infected = false;
         recovered = false;
         spread_radius = radius * StdRandom.uniform(1.5, 2.5);
-        infected_count = 0;
     }
 
     /**

@@ -1,6 +1,5 @@
-import java.awt.Color;
-
-public class InfectionSim {
+public class InfectionSim 
+{
     private static final double HZ = 5;    // number of redraw events per clock tick
     private static final double HZ_SPREAD_CHECK = 5; // number of infection checks per clock tick
     private static double INFECTIVITY = 0.01; // Infectivity at max distance
@@ -103,7 +102,8 @@ public class InfectionSim {
     // redraw all particles
     private void redraw(double limit) {
         this.canvas.clear();
-        for (int i = 0; i < particles.length; i++) {
+        for (int i = 0; i < particles.length; i++)
+        {
             particles[i].draw(canvas);
         }
         this.canvas.show();
@@ -158,29 +158,9 @@ public class InfectionSim {
         infect(particles[0], limit);
         pq.insert(new UpdateGraphEvent(0));
 
-        double last_print = 0;
-
         // the main event-driven simulation loop
-        while (!pq.isEmpty()) { 
-            if (t - last_print > 5)
-            {
-                last_print = t;
-                if (SIR_atual.R > 0)
-                {
-                    double r = 0;
-                    int i_seen = 0;
-                    for (Particle particle : particles)
-                    {
-                        if (particle.recovered)
-                        {
-                            r += (double)particle.infected_count;
-                            i_seen++;
-                        }
-                    }
-                    //StdOut.println("r = " + r/i_seen);
-                }
-            }
-
+        while (!pq.isEmpty()) 
+        { 
             // get impending event, discard if invalidated
             Event event = pq.delMin();
 
@@ -257,7 +237,6 @@ public class InfectionSim {
                     if (StdRandom.uniform(0.0, 1.0) < probability)
                     {
                         infect(S, limit);
-                        I.infected_count++;
                         pq.insert(new UpdateGraphEvent(e.time));
                     }
                     else
